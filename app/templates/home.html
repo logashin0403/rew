@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block title %}
+Sport_Map
+{% endblock %}
+
+{% block content %}
+<main class="page">
+    <div class="page__main-block main-block">
+        <div class="main-block__container _container">
+            <div class="main-block__body">
+                <div class="main-block__body-filter">
+                    <a href="http://127.0.0.1:8000/maps/Футбол"><button style="margin: 20px 60px 0px 60px; height: 40px;
+                             font-family: Montserrat; border: 1px solid #E8E6F8;
+                             border-radius: 10px; font-size: 23px; background-color: #ffc045;
+                              font-weight: bold; padding: 5px">
+                        Футбол</button></a>
+                    <a href="http://127.0.0.1:8000/maps/Баскетбол"><button style="margin: 20px 60px 0px 60px; height: 40px;
+                             font-family: Montserrat; border: 1px solid #E8E6F8;
+                             border-radius: 10px; font-size: 23px; background-color: #ffc045;
+                              font-weight: bold; padding: 5px">
+                        Баскетбол</button></a>
+                    <a href="http://127.0.0.1:8000/maps/Волейбол"><button style="margin: 20px 60px 0px 60px; height: 40px;
+                             font-family: Montserrat; border: 1px solid #E8E6F8;
+                             border-radius: 10px; font-size: 23px; background-color: #ffc045;
+                              font-weight: bold; padding: 5px">
+                        Волейбол</button></a>
+<!--                    <div class="main-block__body-filter_map">-->
+<!--                        <input type="checkbox" id="filter_map" onclick="map()" name="filter_map" checked>-->
+<!--                        <label for="filter_map">Карта</label>-->
+<!--                    </div>-->
+                </div>
+                    <div id="grid_main_page">
+                        {% for area_name in areas %}
+                        <div style="display: inline-block; width: 100%">
+                            <h1 style="padding: 0px 0px 20px 28px;">{{ area_name }}</h1>
+                            <div class="grid" id="grid">
+                                <div class="grid__body">
+                                    {% for ground in ground_list %}
+                                    {% if ground.area == area_name %}
+                                        <div id="grid__item{{ground.ground_id}}" class="grid__item">
+                                        <div class="location">
+                                            <div class="image">
+                                                <img src="{% static ground.photo_url %}" alt="">
+                                            </div>
+                                            <ul id="menu__more{{ground.ground_id}}" class="menu__more0">
+                                                <div class="menu__more-text one">
+                                                    <h1>Аренда</h1>
+                                                    <h1>Контакты</h1>
+                                                    <h1>Ст.Метро</h1>
+                                                </div>
+                                                <div class="menu__more-text two">
+                                                    <h1>{{ ground.price }}</h1>
+                                                    <h1>{{ ground.contact }}</h1>
+                                                    <h1>{{ ground.underground_station }}</h1>
+                                                </div>
+                                            </ul>
+                                            <div class="info">
+                                                <h1>{{ ground.address }}</h1>
+                                                <div class="info__buttons">
+                                                    <button id="button-more{{ground.ground_id}}" class="button-more" onclick="menu_more__open0(this.id)">
+                                                        Подробнее
+                                                    </button>
+                                                    <button id="button-chat{{ground.ground_id}}" onclick="chat_open0(this.id)" class="button-chat">Чат
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <div id="grid__item grid_item-chat{{ground.ground_id}}" class="grid__item grid_item-chat">
+                                        <div class="location">
+                                            <div class="chat">
+                                                <div class="chat-content" id="chat-content{{ground.ground_id}}">
+                                                {% for message in message_list %}
+                                                    {% if message.ground.ground_id == ground.ground_id %}
+                                                        <div class="msg sent">
+                                                            <div class="coments_individual-comments">
+                                                                <div class="coments_individual-comments-info">
+                                                                    <div class="up_info">
+                                                                        <h1 class="coments_individual-comments_name-user">{{ message.author_name }}</h1>
+                                                                        <h1 class="coments_individual-comments_date">{{ message.created }}</h1>
+                                                                    </div>
+                                                                    <div class="down_info">
+                                                                        <h1 class="coments_individual-comments_description">{{ message.body }}</h1>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <form class="info_chats" id="info_chats{{ground.ground_id}}" method="post" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <input type="text" class="coments_chat_input_textbox" name="message-body"
+                                                           placeholder="Оставьте комментарий...">
+                                                    <div class="coments_chat-info__buttons">
+                                                        <button id="coments_chat-button-send{{ground.ground_id}}"
+                                                                class="coments_chat-button-sent" type="submit">
+                                                            Отправить
+                                                        </button>
+
+                                                        <button type="button" id="coments_chat-button-exit{{ground.ground_id}}" onclick="chat_close0(this.id)"
+                                                            class="coments_chat-button-exit">Выход
+                                                        </button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+<!--                <div id="map" class="map" hidden>-->
+<!--                    <center>-->
+<!--                        <script type="text/javascript" charset="utf-8" async-->
+<!--                                src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ac30776e3e44c2378f2bcb49148453d89dad9083e3c8d92fa7a3738153a808b94&amp;width=1300&amp;height=600&amp;lang=ru_RU&amp;scroll=true"></script>-->
+<!--                    </center>-->
+<!--                </div>-->
+
+            </div>
+        </div>
+    </div>
+</main>
+<div style="margin-left: 12%; margin-right: 10%; margin-bottom: 2%; margin-top: 2%">
+    {% if sport_type == "Футбол" %}
+    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2d2b5e1553417575fbdd0d4188d47561dd28b654c86e06eb3f5340e2bbb2b0ae&amp;width=1280&amp;height=720&amp;lang=ru_RU&amp;scroll=true"></script>
+    {% endif %}
+    {% if sport_type == "Баскетбол" %}
+    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A886503ba0609f18820653e8e2372fb4ebc42bf3d795ae81ddce3c36b804611e7&amp;width=1280&amp;height=720&amp;lang=ru_RU&amp;scroll=true"></script>
+    {% endif %}
+    {% if sport_type == "Волейбол" %}
+    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Aee6a9f5ad7847e8a8a7b63de38d0549c40a6f9b370a05b7a2bc7690b1f96c4d5&amp;width=1280&amp;height=720&amp;lang=ru_RU&amp;scroll=true"></script>
+    {% endif %}
+</div>
+{% endblock %}
+

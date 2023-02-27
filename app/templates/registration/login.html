@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static 'css/log.css' %}">
+{% endblock %}
+
+{% block title %}
+    Авторизация
+{% endblock %}
+
+{% block content %}
+<main class="page">
+    <div class="page__main-block main-block">
+        <div class="main-block__container _container">
+            <div class="main-block__title">
+                <h1 class="main-block__title-text">Авторизация</h1>
+            </div>
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+
+                <div class="main-block__body">
+                    <div class="main-block__body-textbox">
+                        <input type="text" id="login" name="username" placeholder="Логин">
+                        <input type="password" id="password" name="password" placeholder="Пароль">
+                    </div>
+                    <div class="main-block-forgot-password">
+                        <a href="/accounts/password_reset/" class="main-block-forgot-password_text">Забыли пароль?</a>
+                    </div>
+                </div>
+
+                <div class="main-block-buttons">
+                    <button type="submit" class="main-block-button main-block__body-button_log">Войти</button>
+                    <a href="/accounts/register/" class="main-block-button main-block__body-button_reg">Регистрация</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</main>
+{% endblock %}

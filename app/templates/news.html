@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/news.css' %}">
+{% endblock %}
+
+{% block title %}
+Новости
+{% endblock %}
+
+{% block content %}
+<main class="page">
+    <div class="page__main-block main-block">
+        <div class="main-block__container _container">
+            <div class="main-block__body">
+                <form method="post" enctype="multipart/form-data" action="/news/add/">
+                    {% csrf_token %}
+
+                    <div class="main-block__body-publish_news">
+                        <div id="main-block__body-publish_textbox" class="main-block__body-publish_textbox">
+                            <input type="text" class="publish_textbox" name="title"
+                                   placeholder="Расскажите что-нибудь сообществу..."
+                                   style="margin-bottom: 10px;">
+                            <textarea class="publish_textbox" name="body" placeholder="Описание поста"
+                                      style="margin-bottom: 10px;"></textarea>
+                            <input type="file" class="publish_textbox" name="photo" placeholder="Фото поста">
+                        </div>
+                        <div>
+                            {{ error }}
+                        </div>
+                        <div class="main-block__body-publish_button">
+                            <input type="submit" class="publish_button" value="Опубликовать">
+                        </div>
+                    </div>
+                </form>
+                <div id="grid_main_page">
+                    <div class="grid" id="grid">
+                        <div class="grid__body">
+                            {% for new in new_list %}
+                            <div class="grid__item">
+                                <div class="location">
+                                    <div class="info">
+                                        <div class="name_date_news">
+                                            <h1 class="name_user_news">{{ new.author_name }}</h1>
+                                            <h1 class="date_news">{{ new.created }}</h1>
+                                        </div>
+                                    </div>
+                                    <div class="signature">
+                                        <h1><a href="{{new.get_absolute_url}}">{{ new.title }}</a></h1>
+                                    </div>
+                                    <div class="image">
+                                        <img src="{% static new.photo_url %}" alt="Фотка новости">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
