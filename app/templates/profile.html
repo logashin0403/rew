@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" xmlns="http://www.w3.org/1999/html">
+{% endblock %}
+
+{% block title %}
+    Личный профиль
+{% endblock %}
+
+{% block content %}
+            <main class="page">
+                <div class="page__main-block main-block">
+                    <div class="main-block__container _container">
+                        <div class="main-block__title">
+                            <h1 class="main-block__title-text">Профиль</h1>
+                        </div>
+                        <div class="main-block__body">
+                            <div class="main-block__body-text">
+                                <h1>Логин</h1>
+                                <h1>Почта</h1>
+                                <h1>Пароль</h1>
+                                <h1>Повторите Пароль</h1>
+                            </div>
+                            <form method="post" enctype="multipart/form-data" action="/info/update/">
+                                {% csrf_token %}
+                                <div class="main-block__body-textbox">
+                                    <h1>Логин</h1>
+                                        <input type="text" id="login" name="username" value="{{ name }}">
+                                    <h1>Почта</h1>
+                                        <input type="email" id="mail" name="email" value="{{ email }}">
+                                    <h1>Пароль</h1>
+                                        <input type="password" id="password" name="password1">
+                                    <h1>Повторите Пароль</h1>
+                                        <input type="password" id="again_password" name="password2">
+                                </div>
+
+                                <div>
+                                    {{ error }}
+                                </div>
+
+                                <div class="main-block-buttons">
+                                    <button type="submit" class="main-block-button main-block__body-button_reg">
+                                        Изменить
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+{% endblock %}

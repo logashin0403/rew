@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/personal_news.css' %}">
+{% endblock %}
+
+{% block title %}
+Новость
+{% endblock %}
+
+{% block content %}
+            <main class="page">
+                <div class="page__main-block main-block">
+                    <div class="main-block__container _container">
+                        <div class="main-block__body">
+                            <div class="main-block__body_name">
+                                <h1 class="name_user_individual-news">{{obj.author_name}}</h1>
+                            </div>
+                            <div class="main-block__body_news-theme">
+                                <h1 class="news-theme_individual-news">{{obj.title}}</h1>
+                            </div>
+                            <div class="main-block__body_news-description">
+                                <h1 class="news-description_individual-news">
+                                    {{obj.body}}
+                                </h1>
+                            </div>
+                            <div class="image">
+                                <img src="{% static obj.photo_url %}" alt="Фотка новости" style="width: 50%">
+                            </div>
+                            <div class="feedback_individual_news">
+                                <h1 class="date_news">{{obj.created}}</h1>
+                            </div>
+                            <hr>
+                            <div class="comments_individual_news">
+                                <form method="post" enctype="multipart/form-data" action="{{obj.get_absolute_url}}add_comment/">
+                                    {% csrf_token %}
+                                    <div class="coments_individual-news_input">
+                                        <input type="text" class="coments_individual-news_input_textbox"
+                                               placeholder="Оставьте комментарий..." name="body">
+                                        <button type="submit" class="coments_individual-news_input_button">
+                                            Отправить
+                                        </button>
+                                    </div>
+                                </form>
+                                {% for comment in comments %}
+                                    <div class="coments_individual-comments">
+                                        <div class="coments_individual-comments-info">
+                                            <div class="up_info">
+                                                <h1 class="coments_individual-comments_name-user">{{comment.author_name}}</h1>
+                                                <h1 class="coments_individual-comments_date">{{comment.created}}</h1>
+                                            </div>
+                                            <div class="down_info">
+                                                <h1 class="coments_individual-comments_description">{{comment.body}}</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+{% endblock %}

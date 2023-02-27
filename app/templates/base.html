@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:regular,500,600,700&display=swap&subset=cyrillic-ext"
+          rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    {% block extrahead %}
+
+    {% endblock %}
+
+    <title>
+        {% block title %}
+        Sports Map
+        {% endblock %}
+    </title>
+</head>
+<body>
+<div class="wrapper">
+    <header class="header">
+        <div class="header__container _container">
+            <div class="header__logo">
+                <img class="header__logo_png" src="{% static 'img/logo.png' %}" alt="Логотип"/>
+                <a href="/maps/Футбол" class="header__logo_text">SportMaps</a>
+            </div>
+            <div class="header__menu menu">
+                <div class="menu__icon">
+                    <span></span>
+                </div>
+                <nav class="menu__body">
+                    <ul class="menu__list">
+                        <li class="menu__item">
+                            <img class="menu__logo" src="{% static 'img/news.png' %}" alt="Новости"/>
+                            <a href="/news/" class="menu__link">Новости</a>
+                        </li>
+                        <li id="showContent" class="menu__item">
+                            <img onclick="submenu__open()" class="menu__logo" src="{% static 'img/profile.png' %}"
+                                 alt="Личный кабинет"/>
+                            <a href="#" onclick="submenu__open()" class="menu__link">Личный кабинет</a>
+                            <ul id="menu__sub-list" class="menu__sub-list">
+                                {% if request.user.is_authenticated %}
+                                    <li class="menu__sub-item-login">
+                                        <a href="##" class="menu__sub-name">{{ request.user.username }}</a>
+                                    </li>
+                                    <li class="menu__sub-item-profile">
+                                        <a href="/info/" class="menu__sub-link">Мой профиль</a>
+                                    </li>
+                                    <li class="menu__sub-item-exit">
+                                        <img class="menu__sub-logo-child" src="{% static 'img/power.png' %}" alt="Выйти"/>
+                                        <a href="/accounts/logout/" class="menu__sub-link">Выйти</a>
+                                    </li>
+                                {% else %}
+                                    <li class="menu__sub-item-login">
+                                        <a href="##" class="menu__sub-name">Аноним</a>
+                                    </li>
+                                    <li class="menu__sub-item-profile">
+                                        <img class="menu__sub-logo-child" src="{% static 'img/profile.png' %}"
+                                             alt="Мой профиль"/>
+                                        <a href="/accounts/login/" class="menu__sub-link">Мой профиль</a>
+                                    </li>
+                                    <li class="menu__sub-item-exit">
+                                        <img class="menu__sub-logo-child" src="{% static 'img/power.png' %}" alt="Войти"/>
+                                        <a href="/accounts/login/" class="menu__sub-link">Войти</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    {% block content %}
+
+    {% endblock %}
+
+    <footer class="footer">
+        <div class="footer__container _container">
+            <div class="footer__column">
+                <div class="footer__label">КОНТАКТЫ</div>
+                <nav class="footer__menu menu-footer">
+                    <ul class="menu-footer__list">
+                        <li class="menu-footer__item"><a href="mailto:ilshat12354@gmail.com"
+                                                         class="menu-footer__link contacts-footer__item_mail">our_email@mail.ru</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer__column">
+                <div class="footer__label">ПОДДЕРЖКА ПРОЕКТА</div>
+                <nav class="footer__menu menu-footer">
+                    <ul class="menu-footer__list">
+                        <li class="menu-footer__item"><a href="" class="menu-footer__link">Отправить донат разрабам</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer__column">
+                <div class="footer__label">ДОБАВИТЬ СВОЮ ПЛОЩАДКУ</div>
+                <nav class="footer__menu menu-footer">
+                    <ul class="menu-footer__list">
+                        <li class="menu-footer__item"><a href="##" class="menu-footer__link">Напишите почту и мы
+                            свяжемся с вами</a></li>
+                        <div class="footer__feedback">
+                            <input type="text" id="personal_mail" class="personal_mail" name="personal_mail"
+                                   placeholder="example@gmail.com">
+                            <button class="submit-button" type="submit">Отправить</button>
+                        </div>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="footer__container _container">
+            <div class="footer__copy">Copyright © SportMap.ru 2022 — Sport Maps. Все права защищены.</div>
+        </div>
+    </footer>
+</div>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
